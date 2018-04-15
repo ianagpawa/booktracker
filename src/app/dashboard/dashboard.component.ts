@@ -49,7 +49,14 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteReader(readerID: number): void {
-    console.warn(`Delete reader not yet implemented (readerID: ${readerID}).`);
+    this.dataService.deleteReader(readerID)
+      .subscribe(
+      (data: void) => {
+        let index: number = this.allReaders.findIndex(reader => reader.readerID === readerID);
+        this.allReaders.splice(index, 1);
+      },
+      (err: any) => console.log(err)
+      )
   }
 
 }

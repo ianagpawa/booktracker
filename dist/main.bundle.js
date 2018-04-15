@@ -479,6 +479,9 @@ var DataService = (function () {
     DataService.prototype.deleteBook = function (bookID) {
         return this.http.delete("/api/books/" + bookID);
     };
+    DataService.prototype.deleteReader = function (readerID) {
+        return this.http.delete("/api/readers/" + readerID);
+    };
     DataService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__logger_service__["a" /* LoggerService */], __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
@@ -587,7 +590,12 @@ var DashboardComponent = (function () {
         }, function (err) { return console.log(err); });
     };
     DashboardComponent.prototype.deleteReader = function (readerID) {
-        console.warn("Delete reader not yet implemented (readerID: " + readerID + ").");
+        var _this = this;
+        this.dataService.deleteReader(readerID)
+            .subscribe(function (data) {
+            var index = _this.allReaders.findIndex(function (reader) { return reader.readerID === readerID; });
+            _this.allReaders.splice(index, 1);
+        }, function (err) { return console.log(err); });
     };
     DashboardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
