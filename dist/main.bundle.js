@@ -82,6 +82,7 @@ module.exports = "<div class=\"col-lg-5\">\r\n  <div class=\"well bs-component\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddReaderComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_app_core_data_service__ = __webpack_require__("../../../../../src/app/core/data.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -92,8 +93,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AddReaderComponent = (function () {
-    function AddReaderComponent() {
+    function AddReaderComponent(dataService) {
+        this.dataService = dataService;
     }
     AddReaderComponent.prototype.ngOnInit = function () { };
     AddReaderComponent.prototype.saveReader = function (formValues) {
@@ -101,6 +104,8 @@ var AddReaderComponent = (function () {
         newReader.readerID = 0;
         console.log(newReader);
         console.warn('Save new reader not yet implemented.');
+        this.dataService.addReader(newReader)
+            .subscribe(function (data) { return console.log(data); }, function (err) { return console.log(err); });
     };
     AddReaderComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -108,7 +113,7 @@ var AddReaderComponent = (function () {
             template: __webpack_require__("../../../../../src/app/add-reader/add-reader.component.html"),
             styles: []
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_app_core_data_service__["a" /* DataService */]])
     ], AddReaderComponent);
     return AddReaderComponent;
 }());
@@ -418,7 +423,6 @@ var DataService = (function () {
         return this.http.get('/api/readers');
     };
     DataService.prototype.getReaderById = function (id) {
-        // return allReaders.find(reader => reader.readerID === id);
         var getHeaders = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
             'Accept': 'application/json'
         });
@@ -451,8 +455,22 @@ var DataService = (function () {
             })
         });
     };
+    DataService.prototype.addReader = function (newReader) {
+        return this.http.post('/api/readers', newReader, {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        });
+    };
     DataService.prototype.updateBook = function (updatedBook) {
         return this.http.put("/api/books/" + updatedBook.bookID, updatedBook, {
+            headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+                'Content-Type': 'application/json'
+            })
+        });
+    };
+    DataService.prototype.updateReader = function (updatedReader) {
+        return this.http.put("/api/readers/" + updatedReader.readerID, updatedReader, {
             headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
                 'Content-Type': 'application/json'
             })
@@ -717,7 +735,9 @@ var EditReaderComponent = (function () {
         this.currentBadge = this.badgeService.getReaderBadge(this.selectedReader.totalMinutesRead);
     };
     EditReaderComponent.prototype.saveChanges = function () {
-        console.warn('Save reader not yet implemented.');
+        var _this = this;
+        this.dataService.updateReader(this.selectedReader)
+            .subscribe(function (data) { return console.log(_this.selectedReader.readerID + " updated successfully"); }, function (err) { return console.log(err); });
     };
     EditReaderComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({

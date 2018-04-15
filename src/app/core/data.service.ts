@@ -27,7 +27,6 @@ export class DataService {
   }
 
   getReaderById(id: number): Observable<Reader> {
-    // return allReaders.find(reader => reader.readerID === id);
     let getHeaders: HttpHeaders = new HttpHeaders({
       'Accept': 'application/json'
     });
@@ -69,6 +68,14 @@ export class DataService {
     })
   }
 
+  addReader(newReader: Reader): Observable<Reader>{
+    return this.http.post<Reader>('/api/readers', newReader, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+  }
+
   updateBook(updatedBook : Book): Observable<void>{
     return this.http.put<void>(`/api/books/${updatedBook.bookID}`, updatedBook, {
       headers: new HttpHeaders({
@@ -76,6 +83,15 @@ export class DataService {
       })
     })
   }
+
+  updateReader(updatedReader: Reader): Observable<void>{
+    return this.http.put<void>(`/api/readers/${updatedReader.readerID}`, updatedReader,{
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+  }
+
 
   deleteBook(bookID: number): Observable<void>{
     return this.http.delete<void>(`/api/books/${bookID}`);

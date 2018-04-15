@@ -16,5 +16,11 @@
         "name": "Lanier",
         "weeklyReadingGoal": 140,
         "totalMinutesRead": 600
+    },
+    {
+        "readerID": 4,
+        "name": "test",
+        "weeklyReadingGoal": "test",
+        "totalMinutesRead": "4654"
     }
 ]

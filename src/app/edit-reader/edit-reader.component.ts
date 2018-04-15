@@ -30,7 +30,11 @@ export class EditReaderComponent implements OnInit {
     this.currentBadge = this.badgeService.getReaderBadge(this.selectedReader.totalMinutesRead);
   }
 
-  saveChanges() {
-    console.warn('Save reader not yet implemented.');
+  saveChanges(): void {
+    this.dataService.updateReader(this.selectedReader)
+      .subscribe(
+        (data: void) => console.log(`${this.selectedReader.readerID} updated successfully`),
+        (err: any) => console.log(err) 
+      );
   }
 }
