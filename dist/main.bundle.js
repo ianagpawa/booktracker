@@ -415,10 +415,16 @@ var DataService = (function () {
         this.mostPopularBook = popularBook;
     };
     DataService.prototype.getAllReaders = function () {
-        return __WEBPACK_IMPORTED_MODULE_3_app_data__["b" /* allReaders */];
+        return this.http.get('/api/readers');
     };
     DataService.prototype.getReaderById = function (id) {
-        return __WEBPACK_IMPORTED_MODULE_3_app_data__["b" /* allReaders */].find(function (reader) { return reader.readerID === id; });
+        // return allReaders.find(reader => reader.readerID === id);
+        var getHeaders = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+            'Accept': 'application/json'
+        });
+        return this.http.get("api/readers/" + id, {
+            headers: getHeaders
+        });
     };
     DataService.prototype.getAllBooks = function () {
         return this.http.get('/api/books');
@@ -549,7 +555,8 @@ var DashboardComponent = (function () {
         var _this = this;
         this.dataService.getAllBooks()
             .subscribe(function (data) { return _this.allBooks = data; }, function (err) { return console.log(err); }, function () { return console.log("All done."); });
-        this.allReaders = this.dataService.getAllReaders();
+        this.dataService.getAllReaders()
+            .subscribe(function (data) { return _this.allReaders = data; }, function (err) { return console.log(err); });
         this.mostPopularBook = this.dataService.mostPopularBook;
         this.title.setTitle("Book Tracker " + __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* VERSION */].full);
     };
@@ -584,7 +591,7 @@ var DashboardComponent = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return allReaders; });
+/* unused harmony export allReaders */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return allBooks; });
 var allReaders = [
     { readerID: 1, name: 'Marie', weeklyReadingGoal: 400, totalMinutesRead: 5600 },
@@ -703,8 +710,10 @@ var EditReaderComponent = (function () {
         this.badgeService = badgeService;
     }
     EditReaderComponent.prototype.ngOnInit = function () {
+        var _this = this;
         var readerID = parseInt(this.route.snapshot.params['id']);
-        this.selectedReader = this.dataService.getReaderById(readerID);
+        this.dataService.getReaderById(readerID)
+            .subscribe(function (data) { return _this.selectedReader = data; }, function (err) { return console.log(err); });
         this.currentBadge = this.badgeService.getReaderBadge(this.selectedReader.totalMinutesRead);
     };
     EditReaderComponent.prototype.saveChanges = function () {

@@ -27,7 +27,11 @@ export class DashboardComponent implements OnInit {
         (err: any) => console.log(err),
         () => console.log("All done.")
       );
-    this.allReaders = this.dataService.getAllReaders();
+    this.dataService.getAllReaders()
+      .subscribe(
+        (data: Reader[]) => this.allReaders = data,
+        (err: any) => console.log(err)
+      );
     this.mostPopularBook = this.dataService.mostPopularBook;
 
     this.title.setTitle(`Book Tracker ${VERSION.full}`);

@@ -22,12 +22,18 @@ export class DataService {
     this.mostPopularBook = popularBook;
   }
 
-  getAllReaders(): Reader[] {
-    return allReaders;
+  getAllReaders(): Observable<Reader[]> {
+    return this.http.get<Reader[]>('/api/readers');
   }
 
-  getReaderById(id: number): Reader {
-    return allReaders.find(reader => reader.readerID === id);
+  getReaderById(id: number): Observable<Reader> {
+    // return allReaders.find(reader => reader.readerID === id);
+    let getHeaders: HttpHeaders = new HttpHeaders({
+      'Accept': 'application/json'
+    });
+    return this.http.get<Reader>(`api/readers/${id}`, {
+      headers: getHeaders
+    });
   }
 
   getAllBooks(): Observable<Book[]> {
