@@ -642,7 +642,9 @@ var EditBookComponent = (function () {
         this.dataService.setMostPopularBook(this.selectedBook);
     };
     EditBookComponent.prototype.saveChanges = function () {
-        console.warn('Save changes to book not yet implemented.');
+        var _this = this;
+        this.dataService.updateBook(this.selectedBook)
+            .subscribe(function (data) { return console.log(_this.selectedBook.title + " updated successfully."); }, function (err) { return console.log(err); });
     };
     EditBookComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
