@@ -554,7 +554,12 @@ var DashboardComponent = (function () {
         this.title.setTitle("Book Tracker " + __WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* VERSION */].full);
     };
     DashboardComponent.prototype.deleteBook = function (bookID) {
-        console.warn("Delete book not yet implemented (bookID: " + bookID + ").");
+        var _this = this;
+        this.dataService.deleteBook(bookID)
+            .subscribe(function (data) {
+            var index = _this.allBooks.findIndex(function (book) { return book.bookID === bookID; });
+            _this.allBooks.splice(index, 1);
+        }, function (err) { return console.log(err); });
     };
     DashboardComponent.prototype.deleteReader = function (readerID) {
         console.warn("Delete reader not yet implemented (readerID: " + readerID + ").");
